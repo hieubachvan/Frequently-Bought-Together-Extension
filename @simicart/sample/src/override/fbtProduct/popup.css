@@ -1,0 +1,87 @@
+
+.popup {
+    display: none;
+}
+
+.popupActive {
+    display: block;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.popupContent {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid #888;
+    width: 35%;
+    
+  
+  }
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+.header {
+  display: flex;
+}
+
+.image {
+    height: 150px;
+    width: auto;
+    margin-right: 2rem;
+    border-radius: 4px;
+}
+
+
+.quantityInput {
+  width: 100px;
+  margin-left: 8px;
+}
+
+.quantity {
+  display: flex;
+  margin-bottom: 1rem;
+}
+/* .root {
+  margin: 0 1.5rem;
+  padding: 1.75rem 0;
+} */
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.selection {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 1rem;
+  display: flex;
+}
+
+.selectionLabel {
+  margin-right: 1rem;
+}
+
+.optionSelections {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgb(var(--venia-global-color-border));
+}
+
+
