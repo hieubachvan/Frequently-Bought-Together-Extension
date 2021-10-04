@@ -15,15 +15,28 @@ import { Form } from 'informed';
 import Button from 'node_modules/@magento/venia-ui/lib/components/Button';
 import { useCartContext } from '@magento/peregrine/lib/context/cart';
 import { set } from 'lodash-es';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaPlusCircle } from 'react-icons/fa';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import defaultOperations from "./fbtProduct.gql"
 
 const Popup = props => {
     const { isOpenPopup, setOpenPopup, listItem, product } = props;
-
+    const [loading, setLoading] = useState(false);
     const operations = mergeOperations(DEFAULT_OPERATIONS, props.operations);
     const { getStoreConfigData, getProductDetailQuery } = operations;
 
+    const [{ cartId }] = useCartContext();
+
+    const [variables, setVariables] = useState([]);
+
     const urlKey_fbtProduct = listItem.map(item => item.url_key);
+ 
+    // const urlKey= listItem.filter(item => item.active ===true);
+    
+    // console.log("hahhas", urlKey);
+
+    
 
     const { data: storeConfigData } = useQuery(getStoreConfigData, {
         fetchPolicy: 'cache-and-network',
@@ -31,10 +44,7 @@ const Popup = props => {
     });
 
     // setup....................................................
-    const [{ cartId }] = useCartContext();
-
-    const [variables, setVariables] = useState([]);
-    const [listSku, setListSku] = useState([]);
+    // const [listSku, setListSku] = useState([]);
 
     let payload = {
         cartId,
@@ -70,47 +80,53 @@ const Popup = props => {
     };
     // console.log('variablelis', variables);
 
-    const ADD_FBT_PRODUCT_TO_CART = gql`
-        mutation AddFbtProductToCart(
-            $cartId: String!
-            $cartItems: [CartItemInput!]!
-        ) {
-            addProductsToCart(cartId: $cartId, cartItems: $cartItems) {
-                cart {
-                    items {
-                        product {
-                            name
-                            sku
-                        }
-                        quantity
-                    }
-                }
-            }
+    // const ADD_FBT_PRODUCT_TO_CART = gql`
+    //     mutation AddFbtProductToCart(
+    //         $cartId: String!
+    //         $cartItems: [CartItemInput!]!
+    //     ) {
+    //         addProductsToCart(cartId: $cartId, cartItems: $cartItems) {
+    //             cart {
+    //                 items {
+    //                     product {
+    //                         name
+    //                         sku
+    //                     }
+    //                     quantity
+    //                 }
+    //             }
+    //         }
+    //     }
+    // `;
+
+    const [addFbtProductToCart] = useMutation(defaultOperations.addFbtProductToCartMutation);
+
+    const submitToCart = async () => {
+        setLoading(true);
+        if (variables.length > 0) {
+            payload = {
+                cartId,
+                cartItems: variables
+            };
+            await addFbtProductToCart({ variables: payload });
+        } else {
+            console.log('error  ');
         }
-    `;
-
-    const [addFbtProductToCart] = useMutation(ADD_FBT_PRODUCT_TO_CART);
-
-    const submitToCart = () => {
-        payload = {
-            cartId,
-            cartItems: variables
-        };
-        addFbtProductToCart({ variables: payload });
+        setLoading(false);
     };
-
     // setup....................................................
 
     const FbtProduct = urlKey_fbtProduct.map(item => {
-        const { error, loading, data } = useQuery(getProductDetailQuery, {
-            fetchPolicy: 'cache-and-network',
-            nextFetchPolicy: 'cache-first',
-            skip: !storeConfigData,
-            variables: {
-                urlKey: item
-            }
-        });
-        return <PopupContent urlKey={item} handleSubmit={handleSubmit} />;
+        // const { error, loading, data } = useQuery(getProductDetailQuery, {
+        //     fetchPolicy: 'cache-and-network',
+        //     nextFetchPolicy: 'cache-first',
+        //     skip: !storeConfigData,
+        //     variables: {
+        //         urlKey: item
+        //     }
+        // });
+        return  <PopupContent urlKey={item} handleSubmit={handleSubmit} />
+        
     });
 
     const classes = defaultClass;
@@ -129,7 +145,12 @@ const Popup = props => {
                     <Form onSubmit={submitToCart}>
                         {FbtProduct}
 
-                        <Button type="submit">add all to cart</Button>
+                        <Button disabled={loading} type="submit">
+                            <FormattedMessage
+                                id={'productFullDetail.cartAction'}
+                                // defaultMessage={'Add to Cart'}
+                            />
+                        </Button>
                     </Form>
                 </Fragment>
             </div>

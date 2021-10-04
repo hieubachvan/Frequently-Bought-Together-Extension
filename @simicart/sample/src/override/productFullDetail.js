@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { arrayOf, bool, number, shape, string } from 'prop-types';
 import { Form } from 'informed';
 import { Info } from 'react-feather';
-
+import { Switch, useLocation } from 'react-router';
 import Price from '@magento/venia-ui/lib/components/Price';
 import { useProductFullDetail } from '@magento/peregrine/lib/talons/ProductFullDetail/useProductFullDetail';
 import { isProductConfigurable } from '@magento/peregrine/lib/util/isProductConfigurable';
@@ -41,7 +41,10 @@ const ERROR_FIELD_TO_MESSAGE_MAPPING = {
 };
 
 const ProductFullDetail = props => {
+ 
     const { product } = props;
+
+    console.log("product use product", product.configurable_options);
 
     const talonProps = useProductFullDetail({ product });
     const {
@@ -215,8 +218,9 @@ const ProductFullDetail = props => {
                     <strong>{productDetails.sku}</strong>
                 </section>
             </Form>
-
-            <FptProducts product={product} />
+            {product.fbt_products.length > 0 ? (
+                <FptProducts product={product} />
+            ) : null}
         </Fragment>
     );
 };

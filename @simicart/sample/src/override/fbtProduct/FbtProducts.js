@@ -4,14 +4,20 @@ import defaultClass from '@simicart/sample/src/override/fbtProduct/fptProducts.c
 import { Link } from 'react-router-dom';
 import Popup from './popup';
 import '@simicart/sample/src/override/fbtProduct/fptProducts.css';
+import { FaTimes, FaPlusCircle } from 'react-icons/fa';
 
 const FbtProducts = props => {
+    const { product } = props;
     const [isOpenPopup, setOpenPopup] = useState(false);
     // const {product1} = useProduct("")
-
-    const { product } = props;
+  
+    // console.log("product", product);
     const fbtProducts = product.fbt_products;
+
+
     const classes = defaultClass;
+
+    // console.log("product url key", product);
 
     const listItem = Array.from(fbtProducts, item => {
         return {
@@ -40,7 +46,7 @@ const FbtProducts = props => {
         setListImage(temp);
     };
 
-    console.log(listImage);
+    console.log("hhahaha",listImage);
 
     const listCheckBox = listImage.map((item, index) => {
         const urlkey = `/${item.url_key}.html`;
@@ -63,6 +69,14 @@ const FbtProducts = props => {
             </div>
         );
     });
+    // const [productActive, setProductActive] = useState(listImage);
+
+    // useEffect(()=> {
+    //     let temp = listImage.filter(item => item.active === true);
+    //     setProductActive(temp)
+    // }, [listImage])
+
+
 
     const productActive = listImage.filter(item => item.active === true);
 
@@ -70,12 +84,19 @@ const FbtProducts = props => {
 
     const image = listImage.map((item, index) => {
         return item.active ? (
-            <img
-                className={classes.image}
-                key={index}
-                src={item.url}
-                alt={item.name}
-            />
+            <>
+                <img
+                    className={classes.image}
+                    key={index}
+                    src={item.url}
+                    alt={item.name}
+                />
+                {index < listImage.length - 1 ? (
+                    <span className={classes.plusIcon}>
+                        <FaPlusCircle className={classes.plusIconSvg} />
+                    </span>
+                ) : null}
+            </>
         ) : null;
     });
 
@@ -84,37 +105,18 @@ const FbtProducts = props => {
             <Popup
                 isOpenPopup={isOpenPopup}
                 setOpenPopup={setOpenPopup}
-                listItem={listImage}
+                listItem={productActive}
                 product={product}
             />
 
             <h1 className={classes.title}>FREQUENTLY BOUGHT TOGETHER</h1>
-            <div className={classes.imgContainer}>
-                <img
-                    className={classes.image}
-                    src={product.small_image}
-                    alt={product.name}
-                />
-                {image}
-            </div>
-            <div className={classes.listItem}>
-                <div className="form-control">
-                    <input
-                        type="checkbox"
-                        name={product.name}
-                        id={product.id}
-                        checked={true}
-                    />
-                    <label htmlFor={product.name}>This Product</label>
-                </div>
-
-                {listCheckBox}
-            </div>
+            <div className={classes.imgContainer}>{image}</div>
+            <div className={classes.listItem}>{listCheckBox}</div>
             <button
                 className={classes.btn}
                 type="button"
                 onClick={openPopup}
-            >{`Add ${listImage.length} to cart with this product`}</button>
+            >{`Add ${productActive.length} to cart with this product`}</button>
         </div>
     );
 };
