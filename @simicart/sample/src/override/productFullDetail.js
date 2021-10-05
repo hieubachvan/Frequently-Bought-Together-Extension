@@ -266,4 +266,11 @@ ProductFullDetail.propTypes = {
     }).isRequired
 };
 
-export default ProductFullDetail;
+const HOProductFulldetail = props => {
+    const {product} = props;
+    return <ProductFullDetail key ={product ? product.id : 'noid'} {...props} />
+}
+
+// export default ProductFullDetail;
+export default HOProductFulldetail;
+
