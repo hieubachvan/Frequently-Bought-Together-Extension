@@ -9,15 +9,10 @@ import { FaTimes, FaPlusCircle } from 'react-icons/fa';
 const FbtProducts = props => {
     const { product } = props;
     const [isOpenPopup, setOpenPopup] = useState(false);
-    // const {product1} = useProduct("")
-  
-    // console.log("product", product);
+
     const fbtProducts = product.fbt_products;
 
-
     const classes = defaultClass;
-
-    // console.log("product url key", product);
 
     const listItem = Array.from(fbtProducts, item => {
         return {
@@ -46,12 +41,10 @@ const FbtProducts = props => {
         setListImage(temp);
     };
 
-    console.log("hhahaha",listImage);
-
     const listCheckBox = listImage.map((item, index) => {
         const urlkey = `/${item.url_key}.html`;
         return (
-            <div className="form-control">
+            <div key={index} className="form-control">
                 <input
                     type="checkbox"
                     name={item.name}
@@ -69,18 +62,8 @@ const FbtProducts = props => {
             </div>
         );
     });
-    // const [productActive, setProductActive] = useState(listImage);
-
-    // useEffect(()=> {
-    //     let temp = listImage.filter(item => item.active === true);
-    //     setProductActive(temp)
-    // }, [listImage])
-
-
 
     const productActive = listImage.filter(item => item.active === true);
-
-    // console.log("product filter", productActive);
 
     const image = listImage.map((item, index) => {
         return item.active ? (

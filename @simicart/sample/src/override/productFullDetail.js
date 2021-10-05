@@ -41,10 +41,7 @@ const ERROR_FIELD_TO_MESSAGE_MAPPING = {
 };
 
 const ProductFullDetail = props => {
- 
     const { product } = props;
-
-    console.log("product use product", product.configurable_options);
 
     const talonProps = useProductFullDetail({ product });
     const {
@@ -267,10 +264,9 @@ ProductFullDetail.propTypes = {
 };
 
 const HOProductFulldetail = props => {
-    const {product} = props;
-    return <ProductFullDetail key ={product ? product.id : 'noid'} {...props} />
-}
+    const { product } = props;
+    return <ProductFullDetail key={product ? product.id : 'noid'} {...props} />;
+};
 
 // export default ProductFullDetail;
 export default HOProductFulldetail;
-

@@ -18,7 +18,7 @@ import { set } from 'lodash-es';
 import { FaTimes, FaPlusCircle } from 'react-icons/fa';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import defaultOperations from "./fbtProduct.gql"
+import defaultOperations from './fbtProduct.gql';
 
 const Popup = props => {
     const { isOpenPopup, setOpenPopup, listItem, product } = props;
@@ -31,12 +31,10 @@ const Popup = props => {
     const [variables, setVariables] = useState([]);
 
     const urlKey_fbtProduct = listItem.map(item => item.url_key);
- 
-    // const urlKey= listItem.filter(item => item.active ===true);
-    
-    // console.log("hahhas", urlKey);
 
-    
+    // const urlKey= listItem.filter(item => item.active ===true);
+
+    // console.log("hahhas", urlKey);
 
     const { data: storeConfigData } = useQuery(getStoreConfigData, {
         fetchPolicy: 'cache-and-network',
@@ -78,28 +76,10 @@ const Popup = props => {
             }
         }
     };
-    // console.log('variablelis', variables);
 
-    // const ADD_FBT_PRODUCT_TO_CART = gql`
-    //     mutation AddFbtProductToCart(
-    //         $cartId: String!
-    //         $cartItems: [CartItemInput!]!
-    //     ) {
-    //         addProductsToCart(cartId: $cartId, cartItems: $cartItems) {
-    //             cart {
-    //                 items {
-    //                     product {
-    //                         name
-    //                         sku
-    //                     }
-    //                     quantity
-    //                 }
-    //             }
-    //         }
-    //     }
-    // `;
-
-    const [addFbtProductToCart] = useMutation(defaultOperations.addFbtProductToCartMutation);
+    const [addFbtProductToCart] = useMutation(
+        defaultOperations.addFbtProductToCartMutation
+    );
 
     const submitToCart = async () => {
         setLoading(true);
@@ -116,17 +96,8 @@ const Popup = props => {
     };
     // setup....................................................
 
-    const FbtProduct = urlKey_fbtProduct.map(item => {
-        // const { error, loading, data } = useQuery(getProductDetailQuery, {
-        //     fetchPolicy: 'cache-and-network',
-        //     nextFetchPolicy: 'cache-first',
-        //     skip: !storeConfigData,
-        //     variables: {
-        //         urlKey: item
-        //     }
-        // });
-        return  <PopupContent urlKey={item} handleSubmit={handleSubmit} />
-        
+    const FbtProduct = urlKey_fbtProduct.map((item, index) => {
+        return <PopupContent urlKey={item} key={index} handleSubmit={handleSubmit} />;
     });
 
     const classes = defaultClass;
